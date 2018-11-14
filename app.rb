@@ -15,7 +15,7 @@ set :views, Proc.new { File.join(root, "view") }
 before do
     if request.request_method == "POST"
         text = request.body.read
-        time = Time.now
+        time = Time.now.to_i
         File.open("data/#{time}.txt","w+") do |file|
             file.puts text
         end
@@ -38,6 +38,12 @@ get '/keys/:key_hash' do
             :public_key_hash => "tz1i1zKCtCAPuAw1e6SuKEMXRcwhG5a78Ruo",
             :public_key => "edpkuuV16fGKAAZifZZqz52oX8LHfUh3smLywuzyrJkKGx1nXrTWcS",
             :private_key => "edsk3xkRt2oBvh5HJejNsGwKgSdc2QrCXGU4Deyj8MY9G9edQhdTsn"
+        },
+        # alice
+        {
+            :public_key_hash => "tz1amfhHn47i5ZYVnUGsTodsZW6G52vqAThE",
+            :public_key => "edpkvJgayg1PDSC8PQhYHR2vC2QXfKkRrQe8BboAN9nU8ssNdARzWe",
+            :private_key => "edsk2rTLCMy9DPkxsdECiZ1kp24n6ngSWQbFsa36D3RjK5F2GdsbgA"
         }
     ]
     for key in keys do
@@ -53,12 +59,32 @@ get '/keys/:key_hash' do
     "Key not found"
 end
 
-post '/signer' do
-    content_type :json
-    text = request.body.read
-    time = Time.now
-    File.open("data/#{time}.txt","w+") do |file|
-        file.puts text
+post '/keys/:key_hash' do
+    headers \
+        "Content-type" => "application/json"
+    key_hash = params["key_hash"]
+    keys = [
+        {
+            :public_key_hash => "tz1i1zKCtCAPuAw1e6SuKEMXRcwhG5a78Ruo",
+            :public_key => "edpkuuV16fGKAAZifZZqz52oX8LHfUh3smLywuzyrJkKGx1nXrTWcS",
+            :private_key => "edsk3xkRt2oBvh5HJejNsGwKgSdc2QrCXGU4Deyj8MY9G9edQhdTsn"
+        },
+        # alice
+        {
+            :public_key_hash => "tz1amfhHn47i5ZYVnUGsTodsZW6G52vqAThE",
+            :public_key => "edpkvJgayg1PDSC8PQhYHR2vC2QXfKkRrQe8BboAN9nU8ssNdARzWe",
+            :private_key => "edsk2rTLCMy9DPkxsdECiZ1kp24n6ngSWQbFsa36D3RjK5F2GdsbgA"
+        }
+    ]
+    for key in keys do
+        if key[:public_key_hash] == key_hash
+            public_key = key[:public_key]
+            @json = {
+                :public_key => public_key
+            }.to_json
+            halt @json
+        end
     end
-    "#{text}"
+
+    "Key not found"
 end
