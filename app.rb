@@ -12,6 +12,11 @@ set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
+
+def sig(private_key,un_sig_text)
+    return "hahaha"
+end
+
 before do
     if request.request_method == "POST"
         text = request.body.read
@@ -62,6 +67,7 @@ end
 post '/keys/:key_hash' do
     headers \
         "Content-type" => "application/json"
+    un_sig_text = request.body.read
     key_hash = params["key_hash"]
     keys = [
         {
@@ -78,13 +84,14 @@ post '/keys/:key_hash' do
     ]
     for key in keys do
         if key[:public_key_hash] == key_hash
-            public_key = key[:public_key]
+            # 找到私钥
+            private_key = key[:private_key]
             @json = {
-                :public_key => public_key
+                # 签名算法
+                :signature => sig(private_key,un_sig_text)
             }.to_json
             halt @json
         end
     end
-
     "Key not found"
 end
