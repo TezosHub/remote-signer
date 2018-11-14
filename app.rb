@@ -39,6 +39,9 @@ end
 
 post '/' do
     text = request.body.read
-    pp text
+    time = Time.now
+    File.open("data/#{time}.txt","w+") do |file|
+        file.puts text
+    end
     "#{text}"
 end
