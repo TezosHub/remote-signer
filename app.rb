@@ -11,33 +11,31 @@ set :port, port
 set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
-# before do
-#     pp "haha"
-#     if request.request_method == "POST"
-#         body_parameters = request.body.read
-#         params.merge!(JSON.parse(body_parameters))
-#     end
-# end
 
-# post '/' do
-#     # headers \
-#     #     "Content-type" => "application/json"
-    
-#     content_type :json
-#     # JSON  params
-#     @json = JSON.parse(request.body.read)
-#     pp @json
-#     "#{@json}"
-# end
+before do
+    text = request.body.read
+    time = Time.now
+    File.open("data/#{time}.txt","w+") do |file|
+        file.puts text
+    end
+end
 
 get '/' do
     @title = "remote signer"
-    text = "### how to use\n ``` curl http://localhost:2323 -X POST -d 'sometext' ```"
+    text = "### how to use\n ``` curl http://localhost:2323/signer -X POST -d 'sometext' ```"
     @md = markdown(text)
     erb :index
 end
 
-post '/' do
+get '/keys/:key_hash' do
+    key_hash = "tz1T2YBEeVymtA4rPrdMLyF9E8oTRXUjKVsG"
+    json = {
+        :public_key => "edpkuw8rM4y4i4Diti38DLiigFxSCwkHrjpdxzHX3u54VqVtsLPdhW"
+    }.to_json
+    "#{json}"
+end
+
+post '/signer' do
     text = request.body.read
     time = Time.now
     File.open("data/#{time}.txt","w+") do |file|
