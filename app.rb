@@ -95,3 +95,7 @@ post '/keys/:key_hash' do
     end
     "Key not found"
 end
+
+get '/authorized_keys' do
+    "{}"
+end
