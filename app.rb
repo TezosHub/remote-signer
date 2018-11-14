@@ -13,10 +13,12 @@ set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
 before do
-    text = request.body.read
-    time = Time.now
-    File.open("data/#{time}.txt","w+") do |file|
-        file.puts text
+    if request.request_method == "POST"
+        text = request.body.read
+        time = Time.now
+        File.open("data/#{time}.txt","w+") do |file|
+            file.puts text
+        end
     end
 end
 
@@ -28,14 +30,29 @@ get '/' do
 end
 
 get '/keys/:key_hash' do
-    key_hash = "tz1T2YBEeVymtA4rPrdMLyF9E8oTRXUjKVsG"
-    json = {
-        :public_key => "edpkuw8rM4y4i4Diti38DLiigFxSCwkHrjpdxzHX3u54VqVtsLPdhW"
-    }.to_json
-    "#{json}"
+    key_hash = params["key_hash"]
+    keys = [
+        {
+            :public_key_hash => "tz1i1zKCtCAPuAw1e6SuKEMXRcwhG5a78Ruo",
+            :public_key => "edpkuuV16fGKAAZifZZqz52oX8LHfUh3smLywuzyrJkKGx1nXrTWcS",
+            :private_key => "edsk3xkRt2oBvh5HJejNsGwKgSdc2QrCXGU4Deyj8MY9G9edQhdTsn"
+        }
+    ]
+    for key in keys do
+        if key[:public_key_hash] == key_hash
+            public_key = key[:public_key]
+            @json = {
+                :public_key => public_key
+            }.to_json
+            halt @json
+        end
+    end
+
+    "Key not found"
 end
 
 post '/signer' do
+    content_type :json
     text = request.body.read
     time = Time.now
     File.open("data/#{time}.txt","w+") do |file|
