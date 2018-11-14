@@ -1,13 +1,16 @@
 require "json"
 require "pp"
 require 'sinatra'
+require "rdiscount"
 
-require 'sinatra'
+
 port = ARGV[0]
 set :bind, '0.0.0.0'
 set :port, port
-set :root, File.dirname(__FILE__)
 
+set :root, File.dirname(__FILE__)
+set :public_folder, Proc.new { File.join(root, "static") }
+set :views, Proc.new { File.join(root, "view") }
 # before do
 #     pp "haha"
 #     if request.request_method == "POST"
@@ -16,13 +19,26 @@ set :root, File.dirname(__FILE__)
 #     end
 # end
 
-post '/' do
-    # headers \
-    #     "Content-type" => "application/json"
+# post '/' do
+#     # headers \
+#     #     "Content-type" => "application/json"
     
-    content_type :json
-    # JSON  params
-    @json = JSON.parse(request.body.read)
-    pp @json
-    "#{@json}"
+#     content_type :json
+#     # JSON  params
+#     @json = JSON.parse(request.body.read)
+#     pp @json
+#     "#{@json}"
+# end
+
+get '/' do
+    @title = "remote signer"
+    text = "### how to use\n ``` curl http://localhost:2323 -X POST -d 'sometext' ```"
+    @md = markdown(text)
+    erb :index
+end
+
+post '/' do
+    text = request.body.read
+    pp text
+    "#{text}"
 end
