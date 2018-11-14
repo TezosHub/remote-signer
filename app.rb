@@ -30,6 +30,8 @@ get '/' do
 end
 
 get '/keys/:key_hash' do
+    headers \
+        "Content-type" => "application/json"
     key_hash = params["key_hash"]
     keys = [
         {

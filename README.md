@@ -12,5 +12,5 @@ curl http://localhost:2323 -X POST -d '{"name":"tom"}'
 
 
 ```
-tezos-client import secret key hellotom http://localhost:5000/tz1T2YBEeVymtA4rPrdMLyF9E8oTRXUjKVsG
+tezos-client import secret key scott http://localhost:5000/tz1i1zKCtCAPuAw1e6SuKEMXRcwhG5a78Ruo
 ```
