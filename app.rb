@@ -97,5 +97,7 @@ post '/keys/:key_hash' do
 end
 
 get '/authorized_keys' do
+    headers \
+        "Content-type" => "application/json" 
     "{}"
 end
