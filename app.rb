@@ -14,18 +14,27 @@ set :views, Proc.new { File.join(root, "view") }
 
 
 def sig(private_key,un_sig_text)
-    return "hahaha"
+    @out = ""
+    cmd = "node ~/signer-off/sig.js #{un_sig_text}"
+    puts cmd
+    IO.popen(cmd) do |f|
+        begin
+        line = f.gets
+        @out = "#{@out}#{line}".chomp
+        end while line!=nil
+    end
+    @out
 end
 
-before do
-    if request.request_method == "POST"
-        text = request.body.read
-        time = Time.now.to_i
-        File.open("data/#{time}.txt","w+") do |file|
-            file.puts text
-        end
-    end
-end
+# before do
+#     if request.request_method == "POST"
+#         text = request.body.read
+#         time = Time.now.to_i
+#         File.open("data/#{time}.txt","w+") do |file|
+#             file.puts text
+#         end
+#     end
+# end
 
 get '/' do
     @title = "remote signer"
@@ -56,8 +65,8 @@ get '/keys/:key_hash' do
             public_key = key[:public_key]
             @json = {
                 :public_key => public_key
-            }.to_json
-            halt @json
+            }
+            halt JSON @json
         end
     end
 
@@ -68,6 +77,12 @@ post '/keys/:key_hash' do
     headers \
         "Content-type" => "application/json"
     un_sig_text = request.body.read
+    time = Time.now.to_i
+    File.open("data/#{time}.txt","w+") do |file|
+        file.puts un_sig_text
+    end
+    puts "post"
+    puts un_sig_text
     key_hash = params["key_hash"]
     keys = [
         {
@@ -89,8 +104,8 @@ post '/keys/:key_hash' do
             @json = {
                 # 签名算法
                 :signature => sig(private_key,un_sig_text)
-            }.to_json
-            halt @json
+            }
+            halt JSON @json
         end
     end
     "Key not found"
