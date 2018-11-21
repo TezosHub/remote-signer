@@ -1,6 +1,7 @@
 require "json"
 require "pp"
 require 'sinatra'
+# require 'rack/ssl'
 
 
 port = ARGV[0]
@@ -11,6 +12,7 @@ set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
+# use Rack::SSL
 
 keys = [
     {
@@ -23,6 +25,12 @@ keys = [
         :public_key_hash => "tz1amfhHn47i5ZYVnUGsTodsZW6G52vqAThE",
         :public_key => "edpkvJgayg1PDSC8PQhYHR2vC2QXfKkRrQe8BboAN9nU8ssNdARzWe",
         :private_key => "edsk2rTLCMy9DPkxsdECiZ1kp24n6ngSWQbFsa36D3RjK5F2GdsbgA"
+    },
+    # cr4fun
+    {
+        :public_key_hash => "tz1U2aZtEhNs5LUN1Ua8GocBBiFH7aCjswGM",
+        :public_key => "edpktzXHNa3u4aQNRMBoXA1V5mY3uDYYDHTh7sGzb2dhVShNyrdhkb",
+        :private_key => "edesk1ykLXqo3KyfUxo9bsgpsPvQFSW3oQcBGN9cnmuSW5tDCjY15B6GF8bjLhZAZi4dRj4k9QSWb41dMCkieb6X"
     }
 ]
 
@@ -77,6 +85,7 @@ post '/keys/:key_hash' do
     headers \
         "Content-type" => "application/json"
     un_sig_text = request.body.read
+
     time = Time.now.to_i
     File.open("data/#{time}.txt","w+") do |file|
         file.puts un_sig_text

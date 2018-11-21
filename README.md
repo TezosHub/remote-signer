@@ -1,5 +1,11 @@
 # remote-signer
 
+install
+
+```
+gem install sinatra
+gem install rack-ssl
+```
 
 
 ```
