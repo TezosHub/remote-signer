@@ -1,7 +1,6 @@
 require "json"
 require "pp"
 require 'sinatra'
-require "rdiscount"
 
 
 port = ARGV[0]
