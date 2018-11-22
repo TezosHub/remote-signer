@@ -4,7 +4,7 @@ var crypto = eztz.crypto;
 let mnemonic = crypto.generateMnemonic();
 var keys = crypto.generateKeys(mnemonic);
 var dir = process.cwd();
-var file = dir+"/keys3.json";
+var file = dir+"/keys.json";
 fs.readFile(file,'utf8',function (err, data) {
     json = [];
     if(!err) {
