@@ -1,0 +1,29 @@
+{
+  "name": "signer-off",
+  "version": "1.0.0",
+  "dependencies": {
+    "bignumber.js": "^7.2.1",
+    "bip39": "^2.5.0",
+    "bs58check": "^2.1.1",
+    "buffer": "^5.1.0",
+    "codecov": "^2.3.1",
+    "libsodium-wrappers": "^0.5.4",
+    "pbkdf2": "^3.0.14",
+    "xhr2": "^0.1.4"
+  },
+  "description": "``` npm install --save tezos-sign ```",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TezosHub/signer-off.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TezosHub/signer-off/issues"
+  },
+  "homepage": "https://github.com/TezosHub/signer-off#readme"
+}
