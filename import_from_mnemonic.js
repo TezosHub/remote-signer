@@ -2,8 +2,8 @@ var eztz = require("./eztz.cli.js");
 var get_ip = require("./ip.js");
 var fs = require ("fs");
 var crypto = eztz.crypto;
-let mnemonic = crypto.generateMnemonic();
-var passphrase = process.argv[2];
+var mnemonic = process.argv[2];
+var passphrase = process.argv[3];
 var keys = {}
 if(passphrase === undefined){
     keys = crypto.generateKeys(mnemonic);

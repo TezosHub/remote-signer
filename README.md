@@ -21,11 +21,27 @@ run
 ruby app.rb 5000
 ```
 
+gen
+
+```
+node gen 1223456
+```
+
+从助记词导入
+```
+node import_from_mnemonic.js "weapon embody amount chunk unaware claim humble flash essence lobster jump deliver symptom print puzzle"
+```
+
+从私钥导入
+```
+node import_from_privete_key.js edskRoUb1xiiZCy423hRNbic6wF4zTUSUE3M5SmVRpTAER8Xz5Ah9dgpFVdzuYqgvTUyryS5HaDRfLX418LkecJ3gpUASEuAEw
+```
+
 
 import
 
 ```
-./tezos-client import secret key cr4fun http://localhost:5000/tz1LsQBCLXYEQsbpTQw8EKsWSRUNThgTA4hT
+tezos-client import secret key cr4fun http://localhost:5000/tz1LsQBCLXYEQsbpTQw8EKsWSRUNThgTA4hT
 ```
 
 
