@@ -7,6 +7,9 @@ require 'sinatra'
 port = ARGV[0]
 set :bind, '0.0.0.0'
 set :port, port
+set :root, File.dirname(__FILE__)
+set :public_folder, Proc.new { File.join(root, "static") }
+set :views, Proc.new { File.join(root, "view") }
 
 json = File.read('keys.json')
 keys = JSON.parse(json)
@@ -24,6 +27,12 @@ def sig(private_key,un_sig_text,key_hash)
     pp @out
     @out
 end
+
+get '/' do
+    erb :index
+end
+
+
 
 get '/keys/:pkh' do
     headers \

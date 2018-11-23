@@ -1,4 +1,5 @@
-# remote-signer
+# remote-signer for tezos
+
 
 clone 
 
@@ -18,10 +19,10 @@ npm install
 run
 
 ```
-ruby app.rb 5000
+screen ruby app.rb 5000&
 ```
 
-gen
+创建一个key
 
 ```
 node gen 1223456
@@ -38,12 +39,15 @@ node import_from_privete_key.js edskRoUb1xiiZCy423hRNbic6wF4zTUSUE3M5SmVRpTAER8X
 ```
 
 
-import
+
+
+从签名服务器导入账户 cr4fun
 
 ```
 tezos-client import secret key cr4fun http://localhost:5000/tz1LsQBCLXYEQsbpTQw8EKsWSRUNThgTA4hT
 ```
 
+使用签名服务器完成转账
 
 reansfer
 

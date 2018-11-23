@@ -1,0 +1,83 @@
+<script src="/js/eztz.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/css/bootstrap.min.css"  >
+<style>
+.panel{
+    max-width: 500px;
+    margin: 50px auto;
+}
+input{
+    margin:10px 0px 10px 0px;
+}
+.name{
+    min-width:50px;
+}
+.table,#cmd{
+    word-wrap:break-word;
+    word-break:break-all;
+    white-space:normal;
+}
+#alert,#table,#cmd{
+    display:none;
+}
+</style>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Restore your sk</h3>
+  </div>
+  <div class="panel-body">
+    <div id="alert" class="alert alert-danger alert-dismissible" role="alert">
+    
+    <strong>Uh-oh!</strong> There was an issue trying to import your encrypted key, please try again.
+    </div>
+    <label for="mnemonic" class="sr-only">mnemonic</label>
+    <input type="text" id="mnemonic" class="form-control" placeholder="mnemonic" value="edesk1ykLXqo3KyfUxo9bsgpsPvQFSW3oQcBGN9cnmuSW5tDCjY15B6GF8bjLhZAZi4dRj4k9QSWb41dMCkieb6X" required="" autofocus="">
+    <label for="passphrase" class="sr-only">passphrase</label>
+    <input type="password" id="passphrase" class="form-control" placeholder="passphrase" required="">
+    <button class="btn btn-lg btn-primary btn-block" type="button" onclick="extractEncryptedKeys()">Restore</button>
+    </table>
+  </div>
+</div>
+
+
+<table id="table" class="panel table table-bordered">
+        <tr>
+            <td class="name" valign="middle">sk</td>
+            <td id="sk"></td> 
+        </tr>
+        <tr>
+            <td class="name" valign="middle">pk</td>
+            <td><p id="pk"></p></td> 
+        </tr>
+        <tr>
+            <td class="name" valign="middle">pkh</td>
+            <td><p id="pkh"></p></td> 
+        </tr>
+</table>
+
+<div id="cmd" class="panel">
+    <h2>bash:</h2>
+    <pre>$ node import_from_privete_key.js <span id="private_key"></span></pre>
+</div>
+
+<script>
+function extractEncryptedKeys(){
+    var mnemonic = document.getElementById("mnemonic").value;
+    var passphrase = document.getElementById("passphrase").value;
+    eztz.crypto.extractEncryptedKeys(mnemonic,passphrase).then(function(key){
+        console.log("key",key);
+        document.getElementById("sk").innerHTML = key.sk;
+        document.getElementById("private_key").innerHTML = key.sk;
+        document.getElementById("pk").innerHTML = key.pk;
+        document.getElementById("pkh").innerHTML = key.pkh;
+        $("#table").show();
+        $("#cmd").show();
+        $("#alert").hide();
+    }).catch(function(e){
+        $("#alert").show();
+        $("#table").hide();
+        $("#cmd").hide();
+    });
+}
+</script>
