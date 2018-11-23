@@ -32,8 +32,6 @@ get '/' do
     erb :index
 end
 
-
-
 get '/keys/:pkh' do
     headers \
         "Content-type" => "application/json"
