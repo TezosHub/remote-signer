@@ -11,8 +11,16 @@ set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
-json = File.read('keys.json')
-keys = JSON.parse(json)
+def getkeys()
+    IO.popen("bash de.sh") do |f|
+        begin
+        line = f.gets
+        @out = "#{@out}#{line}".chomp
+        end while line!=nil
+    end
+    json = File.read('keys.json')
+    keys = JSON.parse(json)
+end
 
 def sig(private_key,un_sig_text,key_hash)
     @out = ""
@@ -36,6 +44,7 @@ get '/keys/:pkh' do
     headers \
         "Content-type" => "application/json"
     pkh = params["pkh"]
+    keys = getkeys()
     for key in keys do
         if key["pkh"] == pkh
             pk = key["pk"]
@@ -60,6 +69,7 @@ post '/keys/:pkh' do
     puts "post"
     puts un_sig_text
     pkh = params["pkh"]
+    keys = getkeys()
     for key in keys do
         if key["pkh"] == pkh
             # 找到私钥

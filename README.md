@@ -55,3 +55,30 @@ reansfer
 tezos-client transfer 1 from cr4fun to tz1amfhHn47i5ZYVnUGsTodsZW6G52vqAThE --fee 0.05;
 ```
 
+
+### hsm
+
+```
+/opt/cloudhsm/bin/cloudhsm_mgmt_util /opt/cloudhsm/etc/cloudhsm_mgmt_util.cfg
+loginHSM CO admin passwd
+create CU user passwd
+```
+
+
+handel
+
+```
+genSymKey -t 31 -s 32 -l aes256
+```
+
+加密
+
+```
+./en.sh user passwd Handle
+```
+
+解密
+
+```
+./de.sh user passwd Handle
+```
