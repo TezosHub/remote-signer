@@ -11,6 +11,36 @@ set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
+hsmconf = {
+    :user => "user",
+    :passwd => "123456",
+    :handle => "19"
+}
+
+def en()
+    user = hsmconf[:user]
+    passwd = hsmconf[:passwd]
+    handle = hsmconf[:handle]
+    IO.popen("bash en.sh #{user} '#{passwd}' #{handle}") do |f|
+        begin
+        line = f.gets
+        @out = "#{@out}#{line}".chomp
+        end while line!=nil
+    end
+end
+
+def de()
+    user = hsmconf[:user]
+    passwd = hsmconf[:passwd]
+    handle = hsmconf[:handle]
+    IO.popen("bash de.sh #{user} '#{passwd}' #{handle}") do |f|
+        begin
+        line = f.gets
+        @out = "#{@out}#{line}".chomp
+        end while line!=nil
+    end
+end
+
 def getkeys()
     user = ""
     passwd = ""
