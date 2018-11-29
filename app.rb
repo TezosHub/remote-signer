@@ -12,7 +12,7 @@ set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
 def getkeys()
-    IO.popen("bash de.sh") do |f|
+    IO.popen("bash de.sh user 'passwd'") do |f|
         begin
         line = f.gets
         @out = "#{@out}#{line}".chomp
