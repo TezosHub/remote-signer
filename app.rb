@@ -11,11 +11,13 @@ set :root, File.dirname(__FILE__)
 set :public_folder, Proc.new { File.join(root, "static") }
 set :views, Proc.new { File.join(root, "view") }
 
-hsmconf = {
-    :user => "user",
-    :passwd => "123456",
-    :handle => "19"
-}
+def hsmconf()
+    {
+        :user => "user",
+        :passwd => "passwd",
+        :handle => "handle"
+    }
+end
 
 def en()
     user = hsmconf[:user]
@@ -42,17 +44,14 @@ def de()
 end
 
 def getkeys()
-    user = ""
-    passwd = ""
-    handle = ""
-    IO.popen("bash de.sh #{user} '#{passwd}' #{handle}") do |f|
-        begin
-        line = f.gets
-        @out = "#{@out}#{line}".chomp
-        end while line!=nil
-    end
+    de()
+    sleep 3
     json = File.read('keys.json')
     keys = JSON.parse(json)
+end
+
+def delkeys()
+    File.delete( "keys.json" )
 end
 
 def sig(private_key,un_sig_text,key_hash)
@@ -111,6 +110,7 @@ post '/keys/:pkh' do
                 # 签名算法
                 :signature => sig(sk,un_sig_text,pkh)
             }
+            delkeys()
             halt JSON @json
         end
     end
