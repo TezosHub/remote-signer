@@ -82,3 +82,23 @@ genSymKey -t 31 -s 32 -l aes256
 ```
 ./de.sh user passwd Handle
 ```
+
+
+### 目录说明
+```
+├── app.rb                          签名服务器      
+├── data                            未签名的历史数据
+├── de.sh                           从HSM中解密 keys.json
+├── en.sh                           用HSM加密   keys.json
+├── eztz.cli.js                     js签名算法库
+├── gen.js                          生成sk、pk、pkh
+├── import_from_mnemonic.js         助记词导入签名服务器
+├── import_from_privete_key.js      私钥导入签名服务器
+├── ip.js       
+├── keys                            经过 HSM 加密的 key.json                      
+├── node_modules
+├── package.json                
+├── README.md                       说明文档
+├── sig.js                          签名命令行
+
+```
